@@ -81,7 +81,7 @@ const USRixits = {
       result = USRixits.chars[Number(num % USRixits.base)] + result;
       num = num / USRixits.base;
     }
-    return result || USRixits.pad;
+    return result;
   },
 
   /**
