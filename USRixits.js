@@ -67,6 +67,7 @@
 
 const USRixits = {
   chars: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_.',
+  pad: '.',
   base: BigInt(64),
 
   /**
@@ -80,7 +81,7 @@ const USRixits = {
       result = USRixits.chars[Number(num % USRixits.base)] + result;
       num = num / USRixits.base;
     }
-    return result || '-';
+    return result || USRixits.pad;
   },
 
   /**
@@ -125,7 +126,7 @@ const USRixits = {
     let result = '';
     for (let i = 0; i < str.length; i += 2) {
       const chunk = str.substr(i, 2);
-      if (chunk === '--') {
+      if (chunk === USRixits.pad + USRixits.pad) {
         break;
       }
       const charCode = Number(USRixits.decodeNumber(chunk));
