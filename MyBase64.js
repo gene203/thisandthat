@@ -50,7 +50,6 @@
  * Jinhyoung Park <gene203@gmail.com>
  */
 
-
 const MyBase64 = {
   chars: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz._-',
   base: BigInt(64),
@@ -119,6 +118,7 @@ const MyBase64 = {
     }
     return result;
   },
+
   /**
    * Encodes a number in the given base.
    * @param {string | number} num - The number to encode.
@@ -134,7 +134,7 @@ const MyBase64 = {
       num = num / BigInt(base);
     }
     return result || '0';
-  }
+  },
 
   /**
    * Decodes a number from the given base.
