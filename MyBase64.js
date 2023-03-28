@@ -125,7 +125,7 @@ const MyBase64 = {
    * @param {number} base - The base to encode the number in (default: 10).
    * @returns {string} The encoded number as a string.
    */
-  function encodeNumberBase(num, base = 10) {
+  encodeNumberBase: (num, base = 10) => {
     num = BigInt(num);
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz._-';
     let result = '';
@@ -142,7 +142,7 @@ const MyBase64 = {
    * @param {number} base - The base to decode the number from (default: 10).
    * @returns {number} The decoded number.
    */
-  function decodeNumberBase(str, base = 10) {
+  decodeNumberBase: (str, base = 10) => {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz._-';
     let num = 0n;
     for (let i = 0; i < str.length; i++) {
