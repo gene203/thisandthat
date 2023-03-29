@@ -4,14 +4,17 @@
  * "URL-safe Rixits" or "USRixits" for short
  *
  * USRixits uses 64 characters, which includes the digits 0-9, uppercase and lowercase letters A-Z,
- * the minus, underscore, and period characters. The encoding scheme also includes a padding character
- * (the period symbol '-') which is optional.
+ * the minus, period, and tilt characters. The encoding scheme also includes a padding character
+ * (the tilt symbol '~') to be used when necessary. as like
+ * 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-. and ~
  *
- * the "USRixits" encoding scheme uses the character set 
- * "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_" for encoding data, with "." as 
- * the padding character. This variant is based on the RFC 4648 §5 "base64url" encoding, which is 
- * designed for use in URL and filename contexts. The "urRixits" encoding scheme is similar to 
- * "base64url", but uses "." as the padding character instead of the "=" character.
+ * Unlike Base64 encoding which uses
+ * ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/ =
+ * USRixits is as like an extension of hexadecimal, to be used in a URL's QueryString.
+ 
+ * This is an extension from hexadecimal notation, and uses - and . as the last 62th, 63th.
+ * Among the special characters of - . _ ~ that can be safely used in the QueryString of a URL,
+ * except for _ which can cause visual confusion, and specifies ~ as a pad to be used if needed.
  *
  * The module provides the following functions:
  *
@@ -34,13 +37,17 @@
  * USRixits는 64개의 문자를 사용하여 구성된 Base64 인코딩 및 디코딩 스키마를 제공하는 커스텀 구현입니다.
  * "URL-safe Rixits" / "URL-안전 릭시트" 혹은 짧게 "USRixits" / "US릭시트"로 명명합니다.
  * 
- * 64개의 문자에는 0-9, 대문자 및 소문자 A-Z, 마이너스, 언더바 및 마침표 기호가 포함됩니다.
- * 이 인코딩 스키마에는 패딩 문자(마침표 기호 '-')가 포함됩니다.
+ * 64개의 문자에는 0-9, 대문자 및 소문자 A-Z, 마이너스(-), 마침표(.) 및 물결표(~) 기호가 포함됩니다.
+ * 이 인코딩 스키마에는 패딩 문자(물결표 기호 '~')가 포함됩니다. 다음과 같이
+ * 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-. 그리고 ~
+ * 가 사용됩니다.
  *
- * "USRixits" 인코딩 체계는 "."를 패딩 문자로 사용하여 데이터를 인코딩하는 데 
- * "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_" 문자 집합을 사용합니다.
- * 이 변형은 URL 및 파일 이름 컨텍스트에서 사용하도록 설계된 RFC 4648 §5 "base64url" 인코딩을 기반으로 합니다.
- * "USRixits" 인코딩 체계는 "base64url"과 유사하지만 "=" 문자 대신 "."를 패딩 문자로 사용합니다.
+ * Base64 인코딩의
+ * ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+ =
+ * 과 달리 16진법표기에서 확장한 형태로서, 마지막 62,63번째 특수 문자는 URL의
+ * 쿼리문자열(QueryString)의 키와 값으로서 안전하게 사용될 수 있는 - . _ ~ 중,
+ * 시각적 혼동이 생길 수 있는 _를 제외하고 - 와 .을 사용하며,
+ * 필요할 경우 사용되는 패드(pad)로서 ~를 지정합니다.
  *
  * 이 모듈은 다음과 같은 함수를 제공합니다:
  *
@@ -66,19 +73,22 @@
  */
 
 const USRixits = {
-  chars: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_.',
-  pad: '.',
+  chars: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-.',
+  pad: '~',
   base: BigInt(64),
 
   /**
    * Encodes a BigInt into a USRixits string.
-   * @param {BigInt} num - The BigInt to encode.
+   * @param {BigInt|string|integer} num - The BigInt to encode.
    * @returns {string} The USRixits-encoded string.
    */
   encodeNumber: (num) => {
+    num = BigInt(num);
+    
     let result = '';
+
     while (num > 0) {
-      result = USRixits.chars[Number(num % USRixits.base)] + result;
+      result = USRixits.chars[num % USRixits.base] + result;
       num = num / USRixits.base;
     }
     return result;
@@ -129,7 +139,7 @@ const USRixits = {
       if (chunk === USRixits.pad + USRixits.pad) {
         break;
       }
-      const charCode = Number(USRixits.decodeNumber(chunk));
+      const charCode = parseInt(USRixits.decodeNumber(chunk));
       result += String.fromCharCode(charCode);
     }
     return result;
@@ -137,7 +147,7 @@ const USRixits = {
 
   /**
    * Encodes a number in the given base.
-   * @param {string | number} num - The number to encode.
+   * @param {string | BigInt | int} num - The number to encode.
    * @param {number} base - The base to encode the number in (default: 10).
    * @returns {string} The encoded number as a string.
    */
@@ -145,17 +155,17 @@ const USRixits = {
     num = BigInt(num);
     let result = '';
     while (num > 0n) {
-      result = USRixits.chars[Number(num % BigInt(base))] + result;
+      result = USRixits.chars[parseInt(num % BigInt(base))] + result;
       num = num / BigInt(base);
     }
-    return result || '0';
+    return result;
   },
 
   /**
    * Decodes a number from the given base.
    * @param {string} str - The string to decode.
    * @param {number} base - The base to decode the number from (default: 10).
-   * @returns {number} The decoded number.
+   * @returns {string} The decoded number.
    */
   decodeNumberBase: (str, base = 10) => {
     let num = 0n;
@@ -166,6 +176,6 @@ const USRixits = {
       }
       num = num * BigInt(base) + BigInt(charIndex);
     }
-    return Number(num);
+    return num.toString();
   }
 };
