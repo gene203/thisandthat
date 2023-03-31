@@ -100,7 +100,11 @@ $.fn.shinyButton = function(options) {
       color: settings.textColor,  // Set the color of the button text
       textAlign: "center",
       textShadow: settings.textShadow,  // Set the text shadow of the button text
-      background: "linear-gradient(45deg, " + settings.gradientStartColor + ", " + settings.gradientMiddleColor + ", " + settings.gradientEndColor + ")",  // Set the background of the button to a silver gradient
+      background: "linear-gradient(60deg, " +
+        settings.gradientStartColor + ", " +
+        settings.gradientMiddleColor + ", " +
+        settings.gradientEndColor +
+      ")",
       boxShadow: "0px 0px 10px " + settings.boxShadowColor,  // Set the box shadow of the button
       transition: "all " + settings.transitionTime + "s ease-out",  // Set the transition of the button
       transform: "perspective(" + settings.perspectiveDistance + "px) rotateX(0deg) rotateY(0deg)",  // Set the perspective and rotation of the button
@@ -119,12 +123,23 @@ $.fn.shinyButton = function(options) {
       var degreeX = -diffY / centerY * settings.tiltAmount; // Calculate the degree of rotation around the X axis based on the proportional difference between the mouse position and the center of the button and the height of the button, multiplied by the maximum tilt amount
       var degreeY = diffX / centerX * settings.tiltAmount; // Calculate the degree of rotation around the Y axis based on the proportional difference between the mouse position and the center of the button and the width of the button, multiplied by the maximum tilt amount
       $this.css({
+        background: "radial-gradient(circle at " +
+          x + "px " +
+          y + "px, " +
+          settings.gradientStartColor + " 0%, " +
+          settings.gradientEndColor +
+        " 100%)",
         transform: "perspective(" + settings.perspectiveDistance + "px) rotateX(" + degreeX + "deg) rotateY(" + degreeY + "deg)" // Set the perspective and rotation of the button based on the calculated degrees
       });
     });
     // Reset button on mouse leave
     $this.mouseleave(function() {
       $this.css({
+        background: "linear-gradient(60deg, " + 
+          settings.gradientStartColor + ", " +
+          settings.gradientMiddleColor + ", " +
+          settings.gradientEndColor +
+        ")",
         transform: "perspective(" + settings.perspectiveDistance + "px) rotateX(0deg) rotateY(0deg)",  // Reset the perspective and rotation of the button
         boxShadow: "0px 0px 10px " + settings.boxShadowColor  // Reset the box shadow of the button
       });
