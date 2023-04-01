@@ -7,11 +7,14 @@
  * the minus, period, and tilt characters. The encoding scheme also includes a padding character
  * (the tilt symbol '~') to be used when necessary. as like
  * 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-. and ~
+ * ^       ^       ^       ^       ^       ^       ^       ^      ^
+ * 0       8       16      24      32      40      48      56     63
  *
  * Unlike Base64 encoding which uses
  * ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/ =
+ * ^       ^       ^       ^       ^       ^       ^       ^      ^
+ * 0       8       16      24      32      40      48      56     63
  * USRixits is as like an extension of hexadecimal, to be used in a URL's QueryString.
- 
  * This is an extension from hexadecimal notation, and uses - and . as the last 62th, 63th.
  * Among the special characters of - . _ ~ that can be safely used in the QueryString of a URL,
  * except for _ which can cause visual confusion, and specifies ~ as a pad to be used if needed.
@@ -40,10 +43,14 @@
  * 64개의 문자에는 0-9, 대문자 및 소문자 A-Z, 마이너스(-), 마침표(.) 및 물결표(~) 기호가 포함됩니다.
  * 이 인코딩 스키마에는 패딩 문자(물결표 기호 '~')가 포함됩니다. 다음과 같이
  * 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-. 그리고 ~
+ * ^       ^       ^       ^       ^       ^       ^       ^      ^
+ * 0       8       16      24      32      40      48      56     63
  * 가 사용됩니다.
  *
  * Base64 인코딩의
- * ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+ =
+ * ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/ =
+ * ^       ^       ^       ^       ^       ^       ^       ^      ^
+ * 0       8       16      24      32      40      48      56     63
  * 과 달리 16진법표기에서 확장한 형태로서, 마지막 62,63번째 특수 문자는 URL의
  * 쿼리문자열(QueryString)의 키와 값으로서 안전하게 사용될 수 있는 - . _ ~ 중,
  * 시각적 혼동이 생길 수 있는 _를 제외하고 - 와 .을 사용하며,
